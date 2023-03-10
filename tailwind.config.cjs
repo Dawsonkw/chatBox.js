@@ -94,7 +94,14 @@ module.exports = {
       'tablet': '640px', 
 
       'mobile': '300px',
-    }
+    },
+    height: {
+      '34' : '8.65rem',
+    },
+    width: {
+      '100' : '30rem',
+      '120' : '40rem'
+    },
     
   },
   },
