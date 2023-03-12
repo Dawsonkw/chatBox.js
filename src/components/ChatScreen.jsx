@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { AiFillVideoCamera } from 'react-icons/ai'
 import { RiUserAddFill } from 'react-icons/ri'
 import { SlOptions } from 'react-icons/sl'
 import ChatInput from './ChatInput';
 import Messages from './Messages';
+import { getAuth } from 'firebase/auth';
 
 const ChatScreen = () => {
+
+
     return (
         <div className='flex flex-col w-2/3  h-full rounded-r-xl bg-kitsuneBlue6'>
             <div className=' grid grid-cols-2 h-24 bg-kitsuneBlue5 rounded-tr-xl w-full '>
@@ -32,7 +35,7 @@ const ChatScreen = () => {
             </div>
 
             {/* Div For Chatting area */}
-            <div className='flex-grow overflow-y-scroll h-64' style={{scrollbarWidth: 'none', 'msOverflowStyle': 'none', '::webkit-scrollbar': {display: 'none'}}}>
+            <div className='flex-grow overflow-y-scroll h-64' style={{scrollbarWidth: 'none', 'msOverflowStyle': 'none', '::webkitScrollbar': {display: 'none'}}}>
                 <Messages />
             </div>
 

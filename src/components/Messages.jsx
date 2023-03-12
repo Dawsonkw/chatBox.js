@@ -1,8 +1,19 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import icon from '../icons/faceIcon.png'
 import testPic from '../TEST/testPic.png'
+import { getAuth } from 'firebase/auth';
 
 function Messages(props) {
+    const [profileImage, setProfileImage] = useState('');
+    const auth = getAuth(); 
+
+    useEffect(() => {
+        const user = auth.currentUser;
+        if(user !== null) {
+            setProfileImage(user.photoURL);
+        }
+    }, [auth])
+
     return (
         <div className=''>
             <div className='flex flex-row px-4 pt-2 '>
@@ -13,7 +24,7 @@ function Messages(props) {
                         {/* Messages will be populated here from firestore */}
                         {/* Message 1 is the message from the user you are talking to */}
                     </p>
-                    <img src={testPic} alt="" />
+                    <img src={testPic} alt="" style={{maxWidth: 400}}/>
                     <p>
                         Just Now
                         {/* Time Stamp will go here */}
@@ -22,7 +33,7 @@ function Messages(props) {
             </div>
 
             <div className='flex flex-row-reverse px-4 pt-2 '>
-            <img src={icon} style={{height: 60, padding:2}} alt="A face Icon"  className='flex-grow-0 flex items-center justify-center bg-teal-500 rounded-full'/>
+            <img src={profileImage} style={{height: 60, padding:2}} alt="A face Icon"  className='flex-grow-0 flex items-center justify-center bg-teal-500 rounded-full'/>
                 <div className='flex flex-col pt-12'>
                     <div className='flex flex-col items-end'>
                         <p className='bg-green-300 py-2 px-4 rounded-tr-none rounded-xl max-w-fit '>
@@ -30,7 +41,7 @@ function Messages(props) {
                             {/* Message 2 Is the message from the user logged in */}
                             {/* Messages will be populated here from firestore */}
                         </p>
-                        <img src={''} alt="" className='flex justify-end items-end'/>
+                        <img src={testPic} alt="" className='flex justify-end items-end' style={{maxWidth: 400}}/>
                     </div>
                     <p className='flex justify-end'>
                         Just Now
