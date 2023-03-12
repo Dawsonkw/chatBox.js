@@ -7,15 +7,15 @@ import UserAuth from './components/UserAuth';
 import Creator from './components/Creator';
 import UpdateProfile from './components/UpdateProfile';
 
-function App() {
 
+function App() {
 
   return (
     <Router>
       <div className="">
         <Routes>
-          <Route exact path='/' element={<Home />}  />
           <Route element={<PrivateRoutes />}>
+            <Route exact path='/' element={<Home />}  />
             <Route path='/profile' element={<Profile />}/>
           </Route>
           <Route path='/login' element={<UserAuth />} />
@@ -30,16 +30,13 @@ function App() {
 export default App
 
 
-// https://www.youtube.com/watch?v=k4mjF4sPITE
-// https://levelup.gitconnected.com/building-chat-app-using-firebase-cross-platform-with-mobile-app-nativescript-web-app-nuxtjs-44b5984e7b7a
-// 
 // 
 //  finish chatScreen section for individual chats
 //  
-//  Figure out how to add images to firestorage instead of firestore
+//  Figure out hard refresh issue required to update profile info 
 //  
-//  
+//  Add in chats context for messages
 // 
-// 
+//   
 // 
 // 
