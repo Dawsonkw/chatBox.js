@@ -2,19 +2,24 @@ import React, { useEffect, useState } from 'react';
 import { getAuth, updateProfile, onAuthStateChanged,} from 'firebase/auth';
 import Header from './Header';
 import { useNavigate } from 'react-router-dom';
-import { getFirestore, collection, doc, updateDoc  } from 'firebase/firestore';
+import { getFirestore, collection, doc, updateDoc, } from 'firebase/firestore';
 import { auth, db, storage } from '../firebase';
-import { getStorage } from 'firebase/storage';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+
 
 function UpdateProfile(props) {
     const [username, setUsername] = useState('');
     const [selectedImage, setSelectedImage] = useState(null);
     const [user, setUser] = useState(null);
+    const [currentUser, setCurrentUser] = useState({})
+
+    
     const auth = getAuth(); 
+    const storage = getStorage();
+    
     const navigate = useNavigate();
     
 
-    
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setUser(user);
@@ -26,30 +31,43 @@ function UpdateProfile(props) {
 
     const handleFormSubmit = async (event) => {
         event.preventDefault();
-
-        let photoURL = null;
-
-        await updateProfile(user, {
-            displayName: username,
-            photoURL: selectedImage ? URL.createObjectURL(selectedImage) : null
-        })
         
+        let photoURL = null
+
+        if(selectedImage) {
+            const storageRef = ref(storage, `profilePics/${user.uid}`);
+            await uploadBytes(storageRef, selectedImage)
+            const downloadURL = await getDownloadURL(storageRef);
+            photoURL = downloadURL;
+        }
+
         try {
             const userDocRef = doc(collection(getFirestore(), 'users'), user.uid);
             await updateDoc(userDocRef, {
                 displayName: username,
-                photoURL: selectedImage ? URL.createObjectURL(selectedImage) : null,
+                photoURL: photoURL,
             });
             console.log('Firestore User Database Updated Successfully');
+
+            const updatedUser = {
+                ...currentUser,
+                displayName: username,
+                photoURL: photoURL
+            }
+            setCurrentUser(updatedUser);
+
+            await updateProfile(auth.currentUser, {
+                displayName: username,
+                photoURL: photoURL
+            })      
         } catch (error) {
             console.error(error);
         }
-
+        
         console.log('Profile Updated Successfully')
         navigate('/profile')
     };
     
-
     return (
         <div>
             <Header />
@@ -72,24 +90,24 @@ function UpdateProfile(props) {
                         />
                     </div>
                     <div>
-                        <h1>Upload your profile picture</h1>
+                        <h1>Upload your profile picture</h1>          
                             {selectedImage && (
-                                <div>
-                                    <img 
-                                        src={URL.createObjectURL(selectedImage)}
-                                        alt="N/A"
-                                        width={'250px'}
-                                    />
-                                    <button
-                                        className='bg-red-400 py-1 px-2 rounded-lg'
-                                        onClick={(event) => {
-                                        setSelectedImage(null)
-                                        event.target.value = null;  
-                                        }}
-                                    > 
-                                        Remove 
-                                    </button>
-                                </div>
+                                    <div>
+                                        <img 
+                                            src={URL.createObjectURL(selectedImage)}
+                                            alt="N/A"
+                                            width={'250px'}
+                                        />
+                                        <button
+                                            className='bg-red-400 py-1 px-2 rounded-lg'
+                                            onClick={(event) => {
+                                            setSelectedImage(null)
+                                            event.target.value = null;  
+                                            }}
+                                        > 
+                                            Remove 
+                                        </button>
+                                    </div>
                             )}
                             <input 
                                 type="file"
@@ -99,7 +117,7 @@ function UpdateProfile(props) {
                                 }} 
                             />
                     </div>
-                <button type='submit' onClick={handleUpload} >Update Profile</button>
+                <button type='submit' >Update Profile</button>
                 
                 </form>
                 
@@ -111,3 +129,6 @@ function UpdateProfile(props) {
 }
 
 export default UpdateProfile;
+
+
+

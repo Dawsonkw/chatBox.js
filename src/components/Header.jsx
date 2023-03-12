@@ -9,7 +9,7 @@ function Header() {
     const navigate = useNavigate();
 
     const navItems = [
-        {label: 'Home', path: '/', component: <Home />},
+        {label: 'Chat', path: '/', component: <Home />},
         {label: 'Profile', path: '/profile', component: <Profile />},
         {label: 'Login', path:'/login', component: <UserAuth />}
     ]

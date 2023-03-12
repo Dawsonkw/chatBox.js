@@ -19,7 +19,7 @@ const PrivateRoutes = () => {
         return null;
     }
     // Conditionally renders landing page through <Outlet/> component if user prop is truthy, otherwise returns user to login screen
-    return auth.user ? <Outlet /> : <Navigate to='/userAuth' /> 
+    return auth.user ? <Outlet /> : <Navigate to='/login' /> 
 }
 
 export default PrivateRoutes;

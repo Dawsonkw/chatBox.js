@@ -1,18 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, { useContext } from 'react';
 import icon from '../icons/faceIcon.png'
 import testPic from '../TEST/testPic.png'
-import { getAuth } from 'firebase/auth';
+import { AuthContext } from '../context/AuthContext';
 
 function Messages(props) {
-    const [profileImage, setProfileImage] = useState('');
-    const auth = getAuth(); 
-
-    useEffect(() => {
-        const user = auth.currentUser;
-        if(user !== null) {
-            setProfileImage(user.photoURL);
-        }
-    }, [auth])
+    const {currentUser} = useContext(AuthContext)
 
     return (
         <div className=''>
@@ -33,7 +25,7 @@ function Messages(props) {
             </div>
 
             <div className='flex flex-row-reverse px-4 pt-2 '>
-            <img src={profileImage} style={{height: 60, padding:2}} alt="A face Icon"  className='flex-grow-0 flex items-center justify-center bg-teal-500 rounded-full'/>
+            <img src={currentUser.photoURL} style={{height: 60, padding:2}} alt="A face Icon"  className='flex-grow-0 flex items-center justify-center bg-teal-500 rounded-full'/>
                 <div className='flex flex-col pt-12'>
                     <div className='flex flex-col items-end'>
                         <p className='bg-green-300 py-2 px-4 rounded-tr-none rounded-xl max-w-fit '>
@@ -48,29 +40,9 @@ function Messages(props) {
                         {/* Time Stamp will go here */}
                     </p>
                 </div>
-            </div>
-            
-
-            
+            </div>     
         </div>
     );
 }
 
 export default Messages;
-
-        // <div className='flex flex-row-reverse flex-wrap px-4 pt-2'>
-        //             <img src={icon} style={{height: 60, padding:2}} alt="A face Icon"  className='flex-grow-0 flex items-center justify-center bg-teal-500 rounded-full'/>
-        //                 <div className='flex flex-col pt-12 '>        
-        //                         <p className=' bg-green-300 py-2 px-4 rounded-tr-none rounded-xl max-w-fit'>
-        //                             Message 2 'Hey look at this cool pic I made in midjourney and if i type something really long then it shows up as akshf; lk sdhg; ajafh akj laksfj aslkfa sflkajs kjashdglk jashdlgk jahsdlg kjhasldkjg'
-        //                             {/* MESSAGE 2 WILL BE THE USER SENDING FROM THE PORT AKA MAIN USER */}
-        //                             {/* Messages will be populated here from firestore */}
-        //                         </p>                
-        //                         <img src={testPic} alt="" />                 
-        //                     <p>
-        //                         Just Now
-        //                         {/* Time stamp will only appear on latest message */}
-        //                         {/* Time Stamp will go here */}
-        //                     </p>
-        //                 </div>
-        //             </div>
