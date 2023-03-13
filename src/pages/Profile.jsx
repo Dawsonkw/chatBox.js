@@ -1,9 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import { getAuth } from 'firebase/auth';
-import { getDoc, getFirestore, doc } from 'firebase/firestore';
+import { getDoc, doc } from 'firebase/firestore';
 import { db } from '../firebase';
+
 
 
 function Profile(props) {
@@ -12,6 +13,7 @@ function Profile(props) {
     const auth = getAuth(); 
     const navigate = useNavigate();
     
+
     useEffect(() => {
         const user = auth.currentUser;
         if(user !== null) {

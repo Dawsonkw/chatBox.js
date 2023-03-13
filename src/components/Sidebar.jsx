@@ -41,8 +41,7 @@ const Sidebar = () => {
                         <div className='pt-1'>
                             <button 
                                 className='py-1 px-1 text-center bg-kitsuneBlue5 rounded-sm text-md text-white'
-                                onClick={logout}
-                            >
+                                onClick={logout}>
                                 Logout
                             </button>
                         </div>
@@ -50,20 +49,9 @@ const Sidebar = () => {
                 </div>          
             </div>
 
-            <div className='border-b-2 border-kitsuneBlue6 h-20 py-6 flex items-center pl-2 w-full text-xl'>
+            <div className='border-b-2 border-kitsuneBlue6 h-24 py-6 flex items-center pl-2 text-xl my-4'>
                 <div className='grid grid-cols-4'>
-                    <div className='col-span-2 col-start-1'>
-                    <input
-                        type="text"
-                        id=""
-                        placeholder='User Search'
-                        className='bg-transparent text-white outline-none placeholder:text-white h-10'
-                    />
-                    </div>
-                    {/* SINCE A USER COMPONENT WILL GO HERE AFTER THE SEARCH POPS UP THIS IS JUST A PLACEHOLDER FOR STYLING */}
-                    <div className='col-span-1 col-start-4 text-lg flex space-x-2 justify-end pr-2'>
                         <Searchbar />              
-                    </div>
                 </div>
             </div>
             

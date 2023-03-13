@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { getAuth, updateProfile, onAuthStateChanged,} from 'firebase/auth';
 import Header from './Header';
 import { useNavigate } from 'react-router-dom';
+import { getAuth, updateProfile, onAuthStateChanged,} from 'firebase/auth';
 import { getFirestore, collection, doc, updateDoc, } from 'firebase/firestore';
-import { auth, db, storage } from '../firebase';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 
@@ -12,14 +11,11 @@ function UpdateProfile(props) {
     const [selectedImage, setSelectedImage] = useState(null);
     const [user, setUser] = useState(null);
     const [currentUser, setCurrentUser] = useState({})
-
     
     const auth = getAuth(); 
-    const storage = getStorage();
-    
+    const storage = getStorage(); 
     const navigate = useNavigate();
     
-
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setUser(user);
@@ -30,8 +26,7 @@ function UpdateProfile(props) {
     }, [auth]);
 
     const handleFormSubmit = async (event) => {
-        event.preventDefault();
-        
+        event.preventDefault();   
         let photoURL = null
 
         if(selectedImage) {
@@ -40,22 +35,19 @@ function UpdateProfile(props) {
             const downloadURL = await getDownloadURL(storageRef);
             photoURL = downloadURL;
         }
-
         try {
             const userDocRef = doc(collection(getFirestore(), 'users'), user.uid);
             await updateDoc(userDocRef, {
                 displayName: username,
                 photoURL: photoURL,
             });
-            console.log('Firestore User Database Updated Successfully');
-
+            console.log('Firestore User Database Updated Successfully'); // Remove console statements before final deployment
             const updatedUser = {
                 ...currentUser,
                 displayName: username,
                 photoURL: photoURL
             }
             setCurrentUser(updatedUser);
-
             await updateProfile(auth.currentUser, {
                 displayName: username,
                 photoURL: photoURL
@@ -64,7 +56,7 @@ function UpdateProfile(props) {
             console.error(error);
         }
         
-        console.log('Profile Updated Successfully')
+        console.log('Profile Updated Successfully') // Remove before final deployment
         navigate('/profile')
     };
     

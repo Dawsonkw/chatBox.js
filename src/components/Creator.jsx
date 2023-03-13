@@ -9,6 +9,7 @@ import { db } from '../firebase';
 
 const current = new Date().toISOString().split("T")[0] //split method will split the string to divide the date from the included tine, [0] selects for the first element (zeroth indexed), we are after the date not the time so we split it to make it useful
 
+
 function Creator() {
 
     const [email, setEmail] = useState('');
