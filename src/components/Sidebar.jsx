@@ -49,8 +49,8 @@ const Sidebar = () => {
                 </div>          
             </div>
 
-            <div className='border-b-2 border-kitsuneBlue6 h-24 py-6 flex items-center pl-2 text-xl my-4'>
-                <div className='grid grid-cols-4'>
+            <div className='border-b-2 border-kitsuneBlue6 h-24 py-6 pl-2 text-xl '>
+                <div className=''>
                         <Searchbar />              
                 </div>
             </div>

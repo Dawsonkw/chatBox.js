@@ -65,29 +65,29 @@ function Searchbar(props) {
     };
 
     return (
-        <div className='grid grid-cols-2'> 
-            <div className='flex flex-row justify-between'>
-                <div className=''>
+        <div> 
+            <div className='flex  justify-between'>
+                <div className='pt-2'>
                     <input
                         type="text"
                         placeholder='User Search'
                         onKeyDown={handleKey}
                         onChange={(event) => setUserName(event.target.value)}
                         value={username}
-                        className='bg-black w-40 text-white outline-none placeholder:text-white  col-start-1'
+                        className='bg-transparent w-32 text-white outline-none placeholder:text-white '
                     />
                 </div>
                 {user && (
-                    <div className='flex py-2 col-start-2 items-center' onClick={handleSelect}>
+                    <div className='flex items-center ' onClick={handleSelect}>
                         <img
-                            className=' flex bg-teal-500 rounded-full '
+                            className='bg-teal-500 rounded-full pr-2 '
                             src={user.photoURL}
-                            style={{height: 40, objectFit: 'cover',  padding:1}}
+                            style={{height: 50, objectFit: 'cover',  padding:1}}
                             alt="User Photo"
                 
                         />
                         <div>
-                            <span className=' text-white text-xl'>{user.displayName}</span>
+                            <span className=' text-white text-xl px-2 pb-1'>{user.displayName}</span>
                         </div>
                     </div>
                 )}
