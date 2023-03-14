@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs, query, serverTimestamp, updateDoc, where } from 'firebase/firestore';
+import { collection, doc, endAt, endBefore, getDoc, getDocs, orderBy, query, serverTimestamp, startAt, updateDoc, where, setDoc } from 'firebase/firestore';
 import React, { useContext, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { db } from '../firebase';
@@ -21,6 +21,7 @@ function Searchbar(props) {
         try {
             const querySnapshot = await getDocs(q);
             querySnapshot.forEach((doc) => {
+                // console.log(doc.data())
                 setUser(doc.data());
             })
         } catch(error) {
@@ -32,36 +33,39 @@ function Searchbar(props) {
         event.code === 'Enter' && handleSearch();
     };
 
-    const handleSelect = async () => {
-        const combinedId = currentUser.uid > user.uid ? currentUser.uid + user.uid : user.uid + currentUser.uid;
+    const handleSelect = async (selectedUser) => {
+        if(user) {const combinedId = currentUser.uid > user.uid ? currentUser.uid + user.uid : user.uid + currentUser.uid;
+        
         try {
-            const response = await getDoc(doc(db, 'chats', combinedId));
+            const response = await getDoc(doc(db, 'userChats', combinedId));
 
             if(!response.exists()) {
-                await setDoc(doc(db, 'chats', combinedId), { messages: [] });
+                await setDoc(doc(db, 'userChats', combinedId), { messages: [] });
+
+                const userData = querySnapshot.docs[0].data();
 
                 await updateDoc(doc(db, 'userChats', currentUser.uid), {
                     [combinedId + '.userInfo']: {
-                        uid: user.uid,
-                        displayName: user.displayName, 
-                        photoURL: user.photoURL
+                        uid: userData.uid,
+                        displayName: userData.displayName, 
+                        photoURL: userData.photoURL
                     },
-                    [combinedId + 'date']: serverTimestamp(),
+                    [combinedId + '.date']: serverTimestamp(),
                 });
 
-                await updateDoc(doc(db, 'userChats', user.uid), {
+                await updateDoc(doc(db, 'userChats', userData.uid), {
                     [combinedId + '.userInfo']: {
                         uid: currentUser.uid,
                         displayName: currentUser.displayName,
                         photoURL: currentUser.photoURL,
                     },
-                    [combinedId + 'date']: serverTimestamp(),
+                    [combinedId + '.date']: serverTimestamp(),
                 });
             }
         } catch (error) {}
-
+        console.log(selectedUser)
         setUser(null);
-        setUserName('')
+        setUserName('')}
     };
 
     return (
@@ -78,7 +82,7 @@ function Searchbar(props) {
                     />
                 </div>
                 {user && (
-                    <div className='flex items-center ' onClick={handleSelect}>
+                    <div className='flex items-center ' onClick={() => handleSelect(user)}>
                         <img
                             className='bg-teal-500 rounded-full pr-2 '
                             src={user.photoURL}

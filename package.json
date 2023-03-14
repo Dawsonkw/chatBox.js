@@ -18,7 +18,8 @@
     "react-router-dom": "^6.9.0",
     "react-spinners": "^0.13.8",
     "sort-by": "^0.0.2",
-    "sweetalert2": "^11.7.3"
+    "sweetalert2": "^11.7.3",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.27",
