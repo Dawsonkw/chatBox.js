@@ -33,6 +33,7 @@ function ChatInput(props) {
                 },
                 () => {
                     getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+                        console.log(data.chatId)
                         await updateDoc(doc(db, 'chats', data.chatId), {
                             messages: arrayUnion({
                                 id: uuid(),

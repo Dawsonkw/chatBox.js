@@ -7,7 +7,7 @@ import { ChatsContextProvider } from './context/ChatsContext'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <AuthContextProvider>
-    <ChatsContextProvider>
+    <ChatsContextProvider> 
       <React.StrictMode>
         <App />
       </React.StrictMode>

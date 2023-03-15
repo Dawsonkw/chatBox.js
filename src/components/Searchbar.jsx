@@ -7,7 +7,8 @@ import { db } from '../firebase';
 function Searchbar(props) {
 
     const [username, setUserName] = useState('');
-    const [selectedUser, setSelectedUser] = useState(null);
+    const [user, setUser] = useState(null);
+    
 
     const { currentUser } = useContext(AuthContext);
 
@@ -20,25 +21,28 @@ function Searchbar(props) {
         try {
             const querySnapshot = await getDocs(q);
             querySnapshot.forEach((doc) => {
-                // console.log(doc.data())
-                setSelectedUser(doc.data());
+                setUser(doc.data());   
             })
         } catch(error) {
             console.error(error)
         }
+        
     };
 
     const handleKey = (event) => {
         event.code === 'Enter' && handleSearch();
     };
 
+
+    
+
     // NEED TO WRITE A NEW HANDLESELECT FEATURE TO HANDLE WHEN A USER SELECTS THE PERSON THEY WANT TO CHAT WITH, DOC.DATA() IS PULLING IN THE INFO OF THE USER, WE NEED TO SYTHESIZE IT INTO A FIRESTORE DOCUMENT SO THAT THE USERS CAN CHAT AND MAKE ANOTHER FIRESTORE DATABASE TO HOLD THE MESSAGES THEY SEND. 
 
     const handleSelect = async () => {
         // combinedId sets a unique id composed of the main user and selected users uid's for a unique chat to be had between them
-        const combinedId = currentUser.uid > selectedUser.uid 
-            ? currentUser.uid + selectedUser.uid 
-            : selectedUser.uid + currentUser.uid;
+        const combinedId = currentUser.uid > user.uid 
+            ? currentUser.uid + user.uid 
+            : user.uid + currentUser.uid;
 
 
         try {
@@ -51,16 +55,16 @@ function Searchbar(props) {
 
 
                 await updateDoc(doc(db, 'userChats', currentUser.uid), {
-                    [combinedId + 'userInfo']: {
-                        uid: selectedUser.uid,
-                        displayName: selectedUser.displayName,
-                        photoURL: selectedUser.photoURL,
+                    [combinedId + '.userInfo']: {
+                        uid: user.uid,
+                        displayName: user.displayName,
+                        photoURL: user.photoURL,
                     },
                     [combinedId + '.date']: serverTimestamp(),
                 });
 
-                await updateDoc(doc(db, 'userChats', selectedUser.uid),{
-                    [combinedId + 'userInfo']: {
+                await updateDoc(doc(db, 'userChats', user.uid),{
+                    [combinedId + '.userInfo']: {
                         uid: currentUser.uid,
                         displayName: currentUser.displayName,
                         photoURL: currentUser.photoURL, 
@@ -71,7 +75,8 @@ function Searchbar(props) {
         } catch (error) {
             console.error(error)
         }
-        setSelectedUser(null);
+        console.log(user)
+        setUser(null);
         setUserName('');
     }
 
@@ -89,17 +94,17 @@ function Searchbar(props) {
                         className='bg-transparent w-32 text-white outline-none placeholder:text-white '
                     />
                 </div>
-                {selectedUser && (
-                    <div className='flex items-center ' onClick={() => handleSelect(selectedUser)}>
+                {user && (
+                    <div className='flex items-center ' onClick={() => handleSelect(user)}>
                         <img
                             className='bg-teal-500 rounded-full pr-2 '
-                            src={selectedUser.photoURL}
+                            src={user.photoURL}
                             style={{height: 50, objectFit: 'cover',  padding:1}}
                             alt="User Photo"
                 
                         />
                         <div>
-                            <span className=' text-white text-xl px-2 pb-1'>{selectedUser.displayName}</span>
+                            <span className=' text-white text-xl px-2 pb-1'>{user.displayName}</span>
                         </div>
                     </div>
                 )}

@@ -49,6 +49,7 @@ function Creator() {
                     date: current,
                 };
                 setDoc(userRef, userData);
+                setDoc(doc(db, "userChats", res.user.uid), {});
 
                 Swal.fire({ //On successful account creation SWAL fires the confirmation
                     icon: 'success',
