@@ -1,4 +1,4 @@
-import { collection, doc, endAt, endBefore, getDoc, getDocs, orderBy, query, serverTimestamp, startAt, updateDoc, where, setDoc } from 'firebase/firestore';
+import { collection, doc, endAt, endBefore, getDoc, getDocs, orderBy, query, QuerySnapshot, serverTimestamp, startAt, updateDoc, where, setDoc } from 'firebase/firestore';
 import React, { useContext, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { db } from '../firebase';
@@ -8,7 +8,6 @@ function Searchbar(props) {
 
     const [username, setUserName] = useState('');
     const [user, setUser] = useState(null);
-    const [error, setError] = useState(false)
 
     const { currentUser } = useContext(AuthContext);
 
@@ -25,7 +24,7 @@ function Searchbar(props) {
                 setUser(doc.data());
             })
         } catch(error) {
-            setError(true)
+            console.error(error)
         }
     };
 
@@ -33,40 +32,48 @@ function Searchbar(props) {
         event.code === 'Enter' && handleSearch();
     };
 
+    // NEED TO WRITE A NEW HANDLESELECT FEATURE TO HANDLE WHEN A USER SELECTS THE PERSON THEY WANT TO CHAT WITH, DOC.DATA() IS PULLING IN THE INFO OF THE USER, WE NEED TO SYTHESIZE IT INTO A FIRESTORE DOCUMENT SO THAT THE USERS CAN CHAT AND MAKE ANOTHER FIRESTORE DATABASE TO HOLD THE MESSAGES THEY SEND. 
+
     const handleSelect = async (selectedUser) => {
-        if(user) {const combinedId = currentUser.uid > user.uid ? currentUser.uid + user.uid : user.uid + currentUser.uid;
-        
+        // combinedId sets a unique id composed of the main user and selected users uid's for a unique chat to be had between them
+        const combinedId = currentUser.uid > selectedUser.uid 
+            ? currentUser.uid + selectedUser.uid 
+            : selectedUser.uid + currentUser.uid;
+
+
         try {
-            const response = await getDoc(doc(db, 'userChats', combinedId));
-
+            const response = await getDoc(doc(db, 'chats', combinedId))
+               
             if(!response.exists()) {
-                await setDoc(doc(db, 'userChats', combinedId), { messages: [] });
+                //create a new doc between the 2 users labeled 'chats' if none exists which holds an empty messages array
+                await setDoc(doc(db, 'chats', combinedId), { messages: [] });
 
-                const userData = querySnapshot.docs[0].data();
 
                 await updateDoc(doc(db, 'userChats', currentUser.uid), {
-                    [combinedId + '.userInfo']: {
-                        uid: userData.uid,
-                        displayName: userData.displayName, 
-                        photoURL: userData.photoURL
+                    [combinedId + 'userInfo']: {
+                        uid: selectedUser.uid,
+                        displayName: selectedUser.displayName,
+                        photoURL: selectedUser.photoURL,
                     },
                     [combinedId + '.date']: serverTimestamp(),
                 });
 
-                await updateDoc(doc(db, 'userChats', userData.uid), {
-                    [combinedId + '.userInfo']: {
+                await updateDoc(doc(db, 'userChats', selectedUser.uid),{
+                    [combinedId + 'userInfo']: {
                         uid: currentUser.uid,
                         displayName: currentUser.displayName,
-                        photoURL: currentUser.photoURL,
+                        photoURL: currentUser.photoURL, 
                     },
                     [combinedId + '.date']: serverTimestamp(),
                 });
             }
-        } catch (error) {}
-        console.log(selectedUser)
+        } catch (error) {
+            console.error(error)
+        }
         setUser(null);
-        setUserName('')}
-    };
+        setUserName('');
+    }
+
 
     return (
         <div> 

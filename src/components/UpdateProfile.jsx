@@ -40,17 +40,20 @@ function UpdateProfile(props) {
             await updateDoc(userDocRef, {
                 displayName: username,
                 photoURL: photoURL,
+                uid: user.uid,
             });
             console.log('Firestore User Database Updated Successfully'); // Remove console statements before final deployment
             const updatedUser = {
                 ...currentUser,
                 displayName: username,
-                photoURL: photoURL
+                photoURL: photoURL,
+                uid: user.uid,
             }
             setCurrentUser(updatedUser);
             await updateProfile(auth.currentUser, {
                 displayName: username,
-                photoURL: photoURL
+                photoURL: photoURL,
+                uid: user.uid,
             })      
         } catch (error) {
             console.error(error);

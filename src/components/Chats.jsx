@@ -1,9 +1,5 @@
-import { doc, onSnapshot, setDoc } from 'firebase/firestore';
 import React, { useContext, useEffect, useState } from 'react';
-import { AuthContext } from '../context/AuthContext';
-import { ChatsContext } from '../context/ChatsContext';
-import { db } from '../firebase';
-import icon from '../icons/faceIcon.png'
+
 
 const Chats = () => {
    
