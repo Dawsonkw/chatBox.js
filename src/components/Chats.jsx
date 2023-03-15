@@ -1,12 +1,16 @@
+import { doc, onSnapshot } from 'firebase/firestore';
 import React, { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../context/AuthContext';
+import { ChatsContext } from '../context/ChatsContext';
+import { db } from '../firebase';
 
 
 const Chats = () => {
-   
+
 
     return (
         <div>    
-            
+ 
         </div>
     );
 };

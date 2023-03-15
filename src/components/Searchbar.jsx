@@ -7,7 +7,7 @@ import { db } from '../firebase';
 function Searchbar(props) {
 
     const [username, setUserName] = useState('');
-    const [user, setUser] = useState(null);
+    const [selectedUser, setSelectedUser] = useState(null);
 
     const { currentUser } = useContext(AuthContext);
 
@@ -21,7 +21,7 @@ function Searchbar(props) {
             const querySnapshot = await getDocs(q);
             querySnapshot.forEach((doc) => {
                 // console.log(doc.data())
-                setUser(doc.data());
+                setSelectedUser(doc.data());
             })
         } catch(error) {
             console.error(error)
@@ -34,7 +34,7 @@ function Searchbar(props) {
 
     // NEED TO WRITE A NEW HANDLESELECT FEATURE TO HANDLE WHEN A USER SELECTS THE PERSON THEY WANT TO CHAT WITH, DOC.DATA() IS PULLING IN THE INFO OF THE USER, WE NEED TO SYTHESIZE IT INTO A FIRESTORE DOCUMENT SO THAT THE USERS CAN CHAT AND MAKE ANOTHER FIRESTORE DATABASE TO HOLD THE MESSAGES THEY SEND. 
 
-    const handleSelect = async (selectedUser) => {
+    const handleSelect = async () => {
         // combinedId sets a unique id composed of the main user and selected users uid's for a unique chat to be had between them
         const combinedId = currentUser.uid > selectedUser.uid 
             ? currentUser.uid + selectedUser.uid 
@@ -43,6 +43,7 @@ function Searchbar(props) {
 
         try {
             const response = await getDoc(doc(db, 'chats', combinedId))
+            
                
             if(!response.exists()) {
                 //create a new doc between the 2 users labeled 'chats' if none exists which holds an empty messages array
@@ -70,7 +71,7 @@ function Searchbar(props) {
         } catch (error) {
             console.error(error)
         }
-        setUser(null);
+        setSelectedUser(null);
         setUserName('');
     }
 
@@ -88,17 +89,17 @@ function Searchbar(props) {
                         className='bg-transparent w-32 text-white outline-none placeholder:text-white '
                     />
                 </div>
-                {user && (
-                    <div className='flex items-center ' onClick={() => handleSelect(user)}>
+                {selectedUser && (
+                    <div className='flex items-center ' onClick={() => handleSelect(selectedUser)}>
                         <img
                             className='bg-teal-500 rounded-full pr-2 '
-                            src={user.photoURL}
+                            src={selectedUser.photoURL}
                             style={{height: 50, objectFit: 'cover',  padding:1}}
                             alt="User Photo"
                 
                         />
                         <div>
-                            <span className=' text-white text-xl px-2 pb-1'>{user.displayName}</span>
+                            <span className=' text-white text-xl px-2 pb-1'>{selectedUser.displayName}</span>
                         </div>
                     </div>
                 )}

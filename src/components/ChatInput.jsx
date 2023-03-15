@@ -1,10 +1,73 @@
 import React, { useContext, useState } from 'react';
 import { IoMdAttach } from 'react-icons/io'
 import { AiOutlinePicture } from 'react-icons/ai'
+import { AuthContext } from '../context/AuthContext';
+import { ChatsContext } from '../context/ChatsContext';
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import { storage } from '../firebase';
+import {  v4 as uuid } from 'uuid'
+import { arrayUnion, serverTimestamp, Timestamp, updateDoc, doc } from 'firebase/firestore';
+import { db } from '../firebase';
+
 
 
 
 function ChatInput(props) {
+
+    const [text, setText] = useState('');
+    const [image, setImage] = useState(null);
+
+    const { currentUser } = useContext(AuthContext);
+    const { data } = useContext(ChatsContext);
+
+    const handleSend = async () => {
+
+        if(image) {
+            const storageRef = ref(storage, uuid());
+
+            const uploadTask = uploadBytesResumable(storageRef,  image);
+
+            uploadTask.on(
+                (error) => {
+                    console.error(error)
+                },
+                () => {
+                    getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+                        await updateDoc(doc(db, 'chats', data.chatId), {
+                            messages: arrayUnion({
+                                id: uuid(),
+                                text,
+                                senderId: currentUser.uid,
+                                date: Timestamp.now(),
+                                image: downloadURL,
+                            })
+                        });
+                    });
+                }
+            );
+            } else{
+                await updateDoc(doc(db, 'chats', data.chatId), {
+                    messages: arrayUnion({
+                        id: uuid(),
+                        text,
+                        senderId: currentUser.uid,
+                        date: Timestamp.now(),
+                    })
+                });
+            }
+
+            await updateDoc(doc(db, 'chats', currentUser.uid), {
+                [data.chatId + '.lastMessage']: {
+                    text
+                },
+                [data.chatId + '.date']: serverTimestamp(),
+            });
+
+            setText('');
+            setImage(null);
+
+
+    }
 
 
     return (
@@ -15,8 +78,8 @@ function ChatInput(props) {
                     style={{lineHeight: '1.5', padding: '10px', whiteSpace: 'pre-wrap', wordWrap: 'break-word', overflowY: 'auto', display: 'block', boxSizing: 'border-box'}} 
                     type="text" 
                     placeholder='Type a message...'
-                    
-                    
+                    onChange={(event) => setText(event.target.value)}
+                    value={text}                
                 />
                 <div className='flex justify-end items-end col-start-2 text-2xl'>
                     <ul className='flex space-x-4 pr-4'>
@@ -28,15 +91,16 @@ function ChatInput(props) {
                         <li className='flex items-center '>
                             <button
                                 type='file'
-                                
+                                onChange={(event) => setImage(event.target.files[0])}              
                             >
                                 <AiOutlinePicture />
                             </button>
                         </li>
                         <li>
-                            <button 
-                            
-                            className='bg-green-300 py-2 px-4 text-white'>
+                            <button             
+                                className='bg-green-300 py-2 px-4 text-white'
+                                onClick={handleSend}
+                            >
                                 Send
                             </button>
                         </li>
