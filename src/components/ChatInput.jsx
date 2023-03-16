@@ -33,8 +33,8 @@ function ChatInput(props) {
                 },
                 () => {
                     getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-                        console.log(data.chatId)
-                        await updateDoc(doc(db, 'chats', data.chatId), {
+                        console.log(data.combinedId)
+                        await updateDoc(doc(db, 'chats', data.combinedId), {
                             messages: arrayUnion({
                                 id: uuid(),
                                 text,
@@ -47,7 +47,7 @@ function ChatInput(props) {
                 }
             );
             } else{
-                await updateDoc(doc(db, 'chats', data.chatId), {
+                await updateDoc(doc(db, 'chats', data.combinedId), {
                     messages: arrayUnion({
                         id: uuid(),
                         text,
@@ -57,17 +57,15 @@ function ChatInput(props) {
                 });
             }
 
-            await updateDoc(doc(db, 'chats', currentUser.uid), {
-                [data.chatId + '.lastMessage']: {
+            await updateDoc(doc(db, 'userChats', currentUser.uid), {
+                [data.combinedId + '.lastMessage']: {
                     text
                 },
-                [data.chatId + '.date']: serverTimestamp(),
+                [data.combinedId + '.date']: serverTimestamp(),
             });
 
             setText('');
             setImage(null);
-
-
     }
 
 

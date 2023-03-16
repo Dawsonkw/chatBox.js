@@ -1,6 +1,7 @@
 import { collection, doc, endAt, endBefore, getDoc, getDocs, orderBy, query, QuerySnapshot, serverTimestamp, startAt, updateDoc, where, setDoc } from 'firebase/firestore';
 import React, { useContext, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
+import { ChatsContext } from '../context/ChatsContext';
 import { db } from '../firebase';
 
 
@@ -11,6 +12,7 @@ function Searchbar(props) {
     
 
     const { currentUser } = useContext(AuthContext);
+    const { dispatch } = useContext(ChatsContext)
 
     const handleSearch = async () => {
         const q = query(
@@ -32,9 +34,6 @@ function Searchbar(props) {
     const handleKey = (event) => {
         event.code === 'Enter' && handleSearch();
     };
-
-
-    
 
     // NEED TO WRITE A NEW HANDLESELECT FEATURE TO HANDLE WHEN A USER SELECTS THE PERSON THEY WANT TO CHAT WITH, DOC.DATA() IS PULLING IN THE INFO OF THE USER, WE NEED TO SYTHESIZE IT INTO A FIRESTORE DOCUMENT SO THAT THE USERS CAN CHAT AND MAKE ANOTHER FIRESTORE DATABASE TO HOLD THE MESSAGES THEY SEND. 
 
@@ -75,6 +74,9 @@ function Searchbar(props) {
         } catch (error) {
             console.error(error)
         }
+
+        dispatch({ type: 'CHANGE_USER', payload: user })
+
         console.log(user)
         setUser(null);
         setUserName('');
