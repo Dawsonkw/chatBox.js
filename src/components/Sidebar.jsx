@@ -6,9 +6,7 @@ import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const Sidebar = () => {
-    const {currentUser} = useContext(AuthContext)
-    console.log(currentUser);
-    
+    const {currentUser} = useContext(AuthContext)  
     const navigate = useNavigate();
 
     const logout = async(event) => {
@@ -26,25 +24,19 @@ const Sidebar = () => {
     }
 
     return (
-        <div className='h-full w-1/3 bg-kitsuneBlue7 rounded-l-xl '>
+        <div className='relative h-full w-1/3 bg-kitsuneBlue7 rounded-l-xl '>
             <div className=' flex flex-col justify-center  h-24 bg-kitsuneBlue4 rounded-tl-xl'>
                 <div className='grid grid-cols-4'>
                     <div className='flex col-span-3 items-center py-2 pr-6 pl-2'>
                         <div className='text-lg flex space-x-2'>
                             <img src={currentUser.photoURL} style={{height: 50, padding:1}} alt="A face Icon"  className=' flex justify-center items-center bg-teal-500 rounded-full '/>
-                            <div className='text-white pt-2 text-2xl'>
+                            <div className='text-white pt-2 text-2xl mobile:hidden sm:hidden md:inline-block'>
                                 {currentUser.displayName}      
                             </div>     
                         </div>
                     </div>
                     <div className='flex col-span-1 justify-end py-4 pr-4'>
-                        <div className='pt-1'>
-                            <button 
-                                className='py-1 px-1 text-center bg-kitsuneBlue5 rounded-sm text-md text-white'
-                                onClick={logout}>
-                                Logout
-                            </button>
-                        </div>
+
                     </div>
                 </div>          
             </div>
@@ -55,10 +47,19 @@ const Sidebar = () => {
                 </div>
             </div>
             
-            <div className='flex-col '>
-                <Chats />
+            
+                <div className='flex flex-col'>
+                    <Chats />
+                </div>
                 {/* Chats Component */}
-            </div>
+                <div className='absolute bottom-0 -left-2 right-0 pt-1 pl-2'>
+                    <button 
+                        className='py-4 px-6 text-center bg-kitsuneBlue5 text-md text-white rounded-bl-xl rounded-tr-xl'
+                        onClick={logout}>
+                        Logout
+                    </button>
+                </div>
+            
         </div>
     );
 };

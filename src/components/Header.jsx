@@ -5,9 +5,7 @@ import UserAuth from './UserAuth';
 import { useNavigate } from 'react-router-dom';
 
 function Header() {
-
     const navigate = useNavigate();
-
     const navItems = [
         {label: 'Chat', path: '/', component: <Home />},
         {label: 'Profile', path: '/profile', component: <Profile />},

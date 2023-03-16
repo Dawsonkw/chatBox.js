@@ -5,7 +5,6 @@ import { ChatsContext } from '../context/ChatsContext';
 const Message = ({message}) => {
     const {currentUser} = useContext(AuthContext)
     const {data} = useContext(ChatsContext)
-
     const ref = useRef();
 
     useEffect(() => {
@@ -13,7 +12,6 @@ const Message = ({message}) => {
     }, [message]);
 
     const isSender = message.senderId === currentUser.uid;
-
 
     return (
         <div ref={ref} className={`message ${isSender ? 'owner' : ''} pb-4`}>
@@ -24,7 +22,7 @@ const Message = ({message}) => {
                     <img src={ isSender ? currentUser.photoURL : data.user.photoURL} style={{ height: 60, padding: 2 }} alt="" className="flex-grow-0 flex items-center justify-center bg-teal-500 rounded-full" />       
                 </div>
                 <div className={`${ isSender ? 'justify-end' : 'justify-start'} pt-12`}>
-                    <p className={`${ isSender ? 'bg-green-300 rounded-xl rounded-tr-none' : 'bg-gray-300 rounded-xl rounded-tl-none'} py-2 px-4 `}>{message.text}</p>
+                    <p className={`${ isSender ? 'bg-green-300 rounded-xl rounded-tr-none' : 'bg-gray-300 rounded-xl rounded-tl-none'} py-2 px-4 mobile:w-32 sm:w-40 md:w-64 lg:w-96 xl:w-100 break-words `}>{message.text}</p>
                     {message.img && <img src={message.img} alt='' />}
                 </div>
 

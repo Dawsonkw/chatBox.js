@@ -35,8 +35,8 @@ const Chats = () => {
                 <div className=' flex py-4 px-2 hover:bg-kitsuneBlue4 hover:cursor-pointer' key={chat[0]} onClick={() => handleSelect(chat[1].userInfo)}>
                     <img className='flex items-center justify-center bg-teal-500 rounded-full ' src={chat[1].userInfo.photoURL} style={{height: 80, padding:2}} alt="" />
                     <div className='flex-col px-4 py-2'>
-                        <h1 className='text-2xl text-white'>{chat[1].userInfo.displayName}</h1>
-                        <p>{chat[1].lastMessage?.text}</p>
+                        <h1 className='text-2xl text-white mobile:hidden sm:hidden md:inline-block'>{chat[1].userInfo.displayName}</h1>
+                        <p className='mobile:hidden sm:hidden md:flex'>{chat[1].lastMessage?.text}</p>
                     </div>
 
                 </div>

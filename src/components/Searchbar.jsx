@@ -1,4 +1,4 @@
-import { collection, doc, endAt, endBefore, getDoc, getDocs, orderBy, query, QuerySnapshot, serverTimestamp, startAt, updateDoc, where, setDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, query, serverTimestamp, updateDoc, where, setDoc } from 'firebase/firestore';
 import React, { useContext, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { ChatsContext } from '../context/ChatsContext';
@@ -35,24 +35,17 @@ function Searchbar(props) {
         event.code === 'Enter' && handleSearch();
     };
 
-    // NEED TO WRITE A NEW HANDLESELECT FEATURE TO HANDLE WHEN A USER SELECTS THE PERSON THEY WANT TO CHAT WITH, DOC.DATA() IS PULLING IN THE INFO OF THE USER, WE NEED TO SYTHESIZE IT INTO A FIRESTORE DOCUMENT SO THAT THE USERS CAN CHAT AND MAKE ANOTHER FIRESTORE DATABASE TO HOLD THE MESSAGES THEY SEND. 
-
     const handleSelect = async () => {
         // combinedId sets a unique id composed of the main user and selected users uid's for a unique chat to be had between them
         const combinedId = currentUser.uid > user.uid 
             ? currentUser.uid + user.uid 
             : user.uid + currentUser.uid;
-
-
         try {
             const response = await getDoc(doc(db, 'chats', combinedId))
-            
-               
+                         
             if(!response.exists()) {
                 //create a new doc between the 2 users labeled 'chats' if none exists which holds an empty messages array
                 await setDoc(doc(db, 'chats', combinedId), { messages: [] });
-
-
                 await updateDoc(doc(db, 'userChats', currentUser.uid), {
                     [combinedId + '.userInfo']: {
                         uid: user.uid,
@@ -61,7 +54,6 @@ function Searchbar(props) {
                     },
                     [combinedId + '.date']: serverTimestamp(),
                 });
-
                 await updateDoc(doc(db, 'userChats', user.uid),{
                     [combinedId + '.userInfo']: {
                         uid: currentUser.uid,
@@ -74,14 +66,10 @@ function Searchbar(props) {
         } catch (error) {
             console.error(error)
         }
-
         dispatch({ type: 'CHANGE_USER', payload: user })
-
-        console.log(user)
         setUser(null);
         setUserName('');
     }
-
 
     return (
         <div> 
@@ -89,11 +77,11 @@ function Searchbar(props) {
                 <div className='pt-2'>
                     <input
                         type="text"
-                        placeholder='User Search'
+                        placeholder='Find User'
                         onKeyDown={handleKey}
                         onChange={(event) => setUserName(event.target.value)}
                         value={username}
-                        className='bg-transparent w-32 text-white outline-none placeholder:text-white '
+                        className='bg-transparent w-32 text-white outline-none placeholder:text-white'
                     />
                 </div>
                 {user && (
@@ -103,7 +91,6 @@ function Searchbar(props) {
                             src={user.photoURL}
                             style={{height: 50, objectFit: 'cover',  padding:1}}
                             alt="User Photo"
-                
                         />
                         <div>
                             <span className=' text-white text-xl px-2 pb-1'>{user.displayName}</span>
