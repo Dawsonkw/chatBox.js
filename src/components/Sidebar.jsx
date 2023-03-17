@@ -54,7 +54,7 @@ const Sidebar = () => {
                 {/* Chats Component */}
                 <div className='absolute bottom-0 -left-2 right-0 pt-1 pl-2'>
                     <button 
-                        className='py-4 px-6 text-center bg-kitsuneBlue5 text-md text-white rounded-bl-xl rounded-tr-xl'
+                        className='py-4 px-6 text-center bg-kitsuneBlue5 text-md text-white rounded-bl-xl rounded-tr-xl hover:bg-kitsuneBlue4'
                         onClick={logout}>
                         Logout
                     </button>

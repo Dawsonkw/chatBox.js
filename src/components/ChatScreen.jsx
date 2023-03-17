@@ -23,17 +23,17 @@ const ChatScreen = () => {
                 {/* This H1 Div is gonna be populated with the name of the user who you are chatting with at the time */}
                 <ul className='flex items-center justify-end space-x-4 pr-4 text-2xl text-white'>
                     <li>
-                        <button>
+                        <button className='hover:text-kitsuneBlue4'>
                             <AiFillVideoCamera />
                         </button>
                     </li>
                     <li>
-                        <button>
+                        <button className='hover:text-kitsuneBlue4'>
                             <RiUserAddFill />
                         </button>
                     </li>
                     <li>
-                        <button>
+                        <button className='hover:text-kitsuneBlue4'>
                             <SlOptions />
                         </button>
                     </li>

@@ -12,7 +12,7 @@ function App() {
 
   return (
     <Router>
-      <div className="">
+      <div className="bg-periwinkle h-screen">
         <Routes>
           <Route element={<PrivateRoutes />}>
             <Route exact path='/' element={<Home />}  />
@@ -31,12 +31,12 @@ export default App
 
 
 // 
-//  finish chatScreen section for individual chats
+//  BG / button color match for login and create account screens
 //  
-//  Figure out hard refresh issue required to update profile info 
+//  figure out null chat input submission cases
 //  
-//  Add in chats context for messages
+//  Solve empty account div on account creation
 // 
-//   
+//   review firebase backend logic and update rules
 // 
 // 

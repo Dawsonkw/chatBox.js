@@ -4,8 +4,9 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { BiShow } from 'react-icons/bi'
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
-import { getFirestore, where, collection, doc, updateDoc, setDoc  } from 'firebase/firestore';
+import { doc, setDoc  } from 'firebase/firestore';
 import { db } from '../firebase';
+import logo from '../images/chatBoxEdit.png'
 
 const current = new Date().toISOString().split("T")[0] //split method will split the string to divide the date from the included tine, [0] selects for the first element (zeroth indexed), we are after the date not the time so we split it to make it useful
 
@@ -83,8 +84,12 @@ function Creator() {
     return (
         <div className=' pt-10 w-1/2 mx-auto'>
             <div className='bg-kitsuneBlue3 rounded-lg p-6 shadow-lg mx-5 pt-5 pb-20 font-robotoSlab'>
+                <div>
+                    <img className='mx-auto pb-4' src={logo} alt="" />
+                    <h2 className='text-4xl text-center pb-4'>Chatbox.js Account Creator</h2>
+                    <p className='text-xl text-center'>To create a chatbox account please input the following: </p>
+                </div>
                 <div className=' bg-gray-200 rounded-md max-w-md mx-auto font-robotoSlab'>
-                    {/* <h1 className='text-xl text-center py-3'>Account Creation</h1> */}
                     
                     <div className=''>
                         <form action="" className='flex justify-center items-center' onSubmit={register} name='registration form'>

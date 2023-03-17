@@ -11,11 +11,9 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
-      console.log(user);
 
       if(user) {
         const userDocRef = doc(db, 'users', user.uid);
-
         // Listens to firestore to update profile without having to refresh page
         const unsubscribe = onSnapshot(userDocRef, (doc) => {
           if(doc.exists()) {
@@ -30,7 +28,6 @@ export const AuthContextProvider = ({ children }) => {
         // Unsubscribe from listener when component unmounts
         return () => unsubscribe();
       }
-
     });
 
     return () => {

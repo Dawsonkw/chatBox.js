@@ -6,11 +6,8 @@ import { db } from '../firebase';
 
 
 function Searchbar(props) {
-
     const [username, setUserName] = useState('');
     const [user, setUser] = useState(null);
-    
-
     const { currentUser } = useContext(AuthContext);
     const { dispatch } = useContext(ChatsContext)
 
@@ -27,8 +24,7 @@ function Searchbar(props) {
             })
         } catch(error) {
             console.error(error)
-        }
-        
+        }    
     };
 
     const handleKey = (event) => {

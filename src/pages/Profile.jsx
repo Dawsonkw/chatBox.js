@@ -36,11 +36,28 @@ function Profile(props) {
     return (
         <div>
             <Header />
-            <button onClick={() => navigate('/updateProfile')}>
-                Update my Profile information
-            </button>
-            <h1>Display Name : {displayName}</h1>
-            <img src={profileImage} alt=""  style={{height: 450}}/>
+            
+            
+            <div>
+                <div className='flex w-full flex-col justify-center items-center'>
+                    <div className=' bg-kitsuneBlue7 rounded-xl px-8 py-4 mt-10'>
+                        <div className='flex  text-4xl mt-4'>
+                            <h1 className='flex font-bold mx-auto'>Display Name: {displayName}</h1>
+                        </div>
+                        <div className=' mt-4 justify-center'>
+                            <img src={profileImage} alt=""  style={{height: 450}}/>
+                            <div className='flex justify-center'>
+                                <button
+                                    className='bg-kitsuneBlue5 hover:bg-kitsuneBlue4 py-4 px-6 rounded-lg mt-4 text-white'
+                                    onClick={() => navigate('/updateProfile')}
+                                >
+                                    Update my Profile information
+                                </button>
+                            </div>
+                        </div>
+                    </div>             
+                </div>            
+            </div>       
         </div>
     );
 }

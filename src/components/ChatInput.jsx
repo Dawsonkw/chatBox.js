@@ -13,18 +13,14 @@ import { db } from '../firebase';
 
 
 function ChatInput(props) {
-
     const [text, setText] = useState('');
     const [image, setImage] = useState(null);
-
     const { currentUser } = useContext(AuthContext);
     const { data } = useContext(ChatsContext);
 
     const handleSend = async () => {
-
         if(image) {
             const storageRef = ref(storage, uuid());
-
             const uploadTask = uploadBytesResumable(storageRef,  image);
 
             uploadTask.on(
@@ -63,7 +59,6 @@ function ChatInput(props) {
                 },
                 [data.combinedId + '.date']: serverTimestamp(),
             });
-
             setText('');
             setImage(null);
     }
@@ -86,15 +81,11 @@ function ChatInput(props) {
                 />
 
                 <div className='flex justify-end items-end col-start-2 text-2xl'>
-                    <ul className='flex space-x-4 pr-4 '>
+                    <ul className='flex space-x-6 pr-4 '>
                         <div className='flex mobile:hidden sm:inline-flex'>
-                            <li className='flex items-center'>
-                                <button>
-                                    <IoMdAttach />
-                                </button>
-                            </li>
                             <li className='flex items-center '>
                                 <button
+                                    className='hover:text-kitsuneBlue4'
                                     type='file'
                                     onChange={(event) => setImage(event.target.files[0])}
                                 >
@@ -104,7 +95,7 @@ function ChatInput(props) {
                         </div>
                         <li>
                             <button             
-                                className='bg-green-300 py-2 px-4 text-white'
+                                className=' bg-kitsuneBlue5 py-2 px-4 text-white hover:bg-kitsuneBlue4'
                                 onClick={handleSend} >
                                 Send
                             </button>

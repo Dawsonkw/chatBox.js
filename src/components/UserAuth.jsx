@@ -1,32 +1,21 @@
 import React, { useState } from 'react';
 import { RingLoader } from 'react-spinners';
 import { BiShow } from 'react-icons/bi';
-import { getAuth, sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
+import { sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2';
 import { auth } from '../firebase';
 import Header from './Header';
+import logo from '../images/chatBoxEdit.png'
 
 
 
 function UserAuth(props) {
     const [showPassword, setShowPassword] = useState(false)
     const [loading, setLoading] = useState(false); 
-    const [inputClass, setInputClass] = useState('text-gray-400');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');   
-    const navigate = useNavigate(); //Change this constant name to something more apt when you get the routing workiog
-
-    const handleChange = (event) => {
-        const {name, value} = event.target;
-        if (name === 'email') {
-            setEmail(value);
-            setInputClass(value || email ? 'text-black' : 'text-gray-400');
-        } else {
-            setPassword(value);
-            setInputClass(value || password ? 'text-black' : 'text-gray-400')
-        }
-    }
+    const navigate = useNavigate(); 
 
     const handleSubmit = async (event) => {
         event.preventDefault(); 
@@ -35,9 +24,7 @@ function UserAuth(props) {
             signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 // Signed in 
-                navigate('/profile') 
-                
-                
+                navigate('/profile')   
             })
         } catch(error) {
             setError('Invalid email or password')
@@ -73,8 +60,14 @@ function UserAuth(props) {
     return (
         <div className='overflow-hidden h-screen'>
             <Header />
-            <div className=' flex justify-center items-center h-screen w-1/2 mx-auto '>
-                <div className='bg-kitsuneBlue3 rounded-lg p-6 shadow-lg mx-5 pt-5 pb-20 font-robotoSlab'>
+            <div className=' flex justify-center items-center h-screen w-1/2 mx-auto -mt-10 '>
+                <div className='bg-kitsuneBlue3 rounded-lg p-6 shadow-lg mx-5  pb-20 font-robotoSlab'>
+                    <div>
+                        <h1 className='text-center text-4xl pb-4'>Chatbox.js Login</h1>
+                    </div>
+                    <div className='pb-4'>
+                        <img src={logo} alt="" />
+                    </div>
             
             
                     <form onSubmit={handleSubmit}  className='bg-gray-200 rounded-lg p-6' action="" autoComplete='off'>

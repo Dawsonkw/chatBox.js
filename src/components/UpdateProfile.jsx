@@ -66,56 +66,64 @@ function UpdateProfile(props) {
     return (
         <div>
             <Header />
-            <div>
-                <h1>
-                    Profile Information
-                </h1>
-                <p>
-                    Enter your profile information
-                </p>
-                <form onSubmit={handleFormSubmit}>
-                    <div>
-                        <label htmlFor="">Username</label>
-                        <input 
-                            type="text" 
-                            name="" id="username" 
-                            placeholder='What would you like to be called?'
-                            value={username}
-                            onChange={(event) => setUsername(event.target.value)}
-                        />
+            <div className='flex flex-col mx-auto items-center'>
+                <div className='rounded-xl bg-kitsuneBlue7 px-8 py-4 mt-10'>
+                    <div className=''>
+                        <h1 className='text-4xl underline pb-4 text-center'>
+                            Profile Information
+                        </h1>
+                        {/* <p className='text-xl text-center mb-6'>
+                            Enter your profile information
+                        </p> */}
                     </div>
-                    <div>
-                        <h1>Upload your profile picture</h1>          
-                            {selectedImage && (
-                                    <div>
-                                        <img 
-                                            src={URL.createObjectURL(selectedImage)}
-                                            alt="N/A"
-                                            width={'250px'}
-                                        />
-                                        <button
-                                            className='bg-red-400 py-1 px-2 rounded-lg'
-                                            onClick={(event) => {
-                                            setSelectedImage(null)
-                                            event.target.value = null;  
-                                            }}
-                                        > 
-                                            Remove 
-                                        </button>
-                                    </div>
-                            )}
-                            <input 
-                                type="file"
-                                name='profileImage'
-                                onChange={(event) => {
-                                    setSelectedImage(event.target.files[0])
-                                }} 
-                            />
+                    <form className='flex flex-col items-center' onSubmit={handleFormSubmit}>
+                    
+                        <div>
+                            <h1 className='text-center text-xl'>Upload your profile picture</h1>
+                                {selectedImage && (
+                                        <div className='flex flex-col'>
+                                            <img
+                                            className='mx-auto'
+                                                src={URL.createObjectURL(selectedImage)}
+                                                alt="N/A"
+                                                width={'350px'}
+                                            />
+                                            <button
+                                                className='bg-red-400 py-1 px-2 rounded-lg justify-center items-center mb-2'
+                                                onClick={(event) => {
+                                                setSelectedImage(null)
+                                                event.target.value = null;
+                                                }}
+                                            >
+                                                Remove
+                                            </button>
+                                        </div>
+                                )}
+                                <input
+                                    type="file"
+                                    name='profileImage'
+                                    onChange={(event) => {
+                                        setSelectedImage(event.target.files[0])
+                                    }}
+                                />
+                            <div className='my-4 flex justify-center'>
+                                <label className='text-lg '>Pick A Username: </label>
+                                <input
+                                    type="text"
+                                    name="" id="username"
+                                    placeholder=' Username...'
+                                    value={username}
+                                    onChange={(event) => setUsername(event.target.value)}
+                                />
+                            </div>
+                        </div>
+                    <div className=' bg-kitsuneBlue5 hover:bg-kitsuneBlue4 hover:cursor-pointer py-4 px-6 rounded-lg text-white'>
+                        <button type='submit' >Update Profile</button>
                     </div>
-                <button type='submit' >Update Profile</button>
-                
-                </form>
-                
+                    
+                    </form>
+                    
+                </div>
                 
             </div>
 
