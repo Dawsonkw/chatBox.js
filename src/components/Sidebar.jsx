@@ -1,23 +1,44 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { getAuth, signOut} from 'firebase/auth';
 import Chats from './Chats';
 import Searchbar from './Searchbar';
 import { AuthContext } from '../context/AuthContext';
+import { ChatsContext } from '../context/ChatsContext'
 import { useNavigate } from 'react-router-dom';
+import { doc, onSnapshot } from 'firebase/firestore';
+import { db } from '../firebase';
 
 const Sidebar = () => {
+    const [messages, setMessages] = useState([]);
     const {currentUser} = useContext(AuthContext)  
+    const { data } = useContext(ChatsContext);
     const navigate = useNavigate();
 
-    const logout = async(event) => {
+    useEffect(() => {
+        const getChats = () => {
+            if(!data.combinedId) return;
+            const unsubscribe = onSnapshot(doc(db, 'chats', data.combinedId), (doc) => {
+                setMessages(doc.data().messages)
+            });
+
+            return () => {
+                unsubscribe()
+            };
+        };
+        currentUser.uid && getChats()
+    }, [currentUser.uid, data.combinedId])
+
+    const clearMessagesOnLogout = () => {
+        setMessages([]);
+    }
+
+    const logout = async (event) => {
         event.preventDefault();
         try{
             const auth = getAuth();
-            signOut(auth)
-                .then(() => {
-                //Sign out successful
-                })
-                .then(navigate('/login'))
+            await signOut(auth);
+            clearMessagesOnLogout();
+            navigate('/login');
         } catch(error) {
             console.log(error)
         }

@@ -28,6 +28,8 @@ const Messages = () =>  {
     useEffect(() => {
         autoScrollRef.current?.scrollIntoView({ behavior: 'smooth' })
     })
+
+
      
     return (
         <div className=''>

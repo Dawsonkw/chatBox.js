@@ -1,5 +1,4 @@
-import React, { useContext, useState } from 'react';
-import { IoMdAttach } from 'react-icons/io'
+import React, { useContext, useEffect, useState } from 'react';
 import { AiOutlinePicture } from 'react-icons/ai'
 import { AuthContext } from '../context/AuthContext';
 import { ChatsContext } from '../context/ChatsContext';
@@ -15,19 +14,39 @@ import { db } from '../firebase';
 function ChatInput(props) {
     const [text, setText] = useState('');
     const [image, setImage] = useState(null);
+    const [previewImage, setPreviewImage] = useState(null);
     const { currentUser } = useContext(AuthContext);
     const { data } = useContext(ChatsContext);
 
+    useEffect(() => {
+        if(image) {
+            const read = new FileReader()
+            read.onload = (event) => {
+                setPreviewImage(event.target.result)
+            };
+            read.readAsDataURL(image);
+        } else {
+            setPreviewImage(null)
+        }
+    }, [image]);
+
     const handleSend = async () => {
+        if(!text.trim() && !image) return;
+
         if(image) {
             const storageRef = ref(storage, uuid());
             const uploadTask = uploadBytesResumable(storageRef,  image);
 
             uploadTask.on(
+                'state_changed',
+                (snapshot) => {
+                    const uploadProgress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    console.log('Upload is ' + uploadProgress + '% done')
+                },
                 (error) => {
                     console.error(error)
                 },
-                () => {
+                async () => {
                     getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
                         console.log(data.combinedId)
                         await updateDoc(doc(db, 'chats', data.combinedId), {
@@ -39,6 +58,7 @@ function ChatInput(props) {
                                 image: downloadURL,
                             })
                         });
+                        setImage(null);
                     });
                 }
             );
@@ -70,37 +90,64 @@ function ChatInput(props) {
 
     return (
         <div>
-            <div className='bg-white w-full h-24 items-center pl-4 grid grid-cols-2'>
+            <div className='bg-white w-full h-24 items-center pl-4 flex justify-between'>
                 <textarea 
-                    className=' w-full resize-none h-20 my-auto text-xl pl-2 focus:outline-none col-start-1 overflow-y-auto overflow-x-hidden sm:w-44 md:w-52 lg:w-72 xl:w-100 bg-transparent' 
+                    className=' w-full resize-none h-20 my-auto text-xl pl-2 focus:outline-none overflow-y-auto overflow-x-hidden sm:w-44 md:w-52 lg:w-72 xl:w-100 bg-transparent' 
                     style={{lineHeight: '1.5', padding: '10px', whiteSpace: 'pre-wrap', wordWrap: 'break-word', overflowY: 'auto', display: 'block', boxSizing: 'border-box'}} 
                     placeholder='Type a message...'
                     onChange={(event) => setText(event.target.value)}
                     value={text}
                     onKeyDown={handleKey}
                 />
+                {previewImage && 
+                <div className='relative'>
+                    <img
+                        src={previewImage}
+                        alt='Image Upload Preview'
+                        style={{ width: '75px', height: '75px', objectFit: 'cover' }}
+                        className=''
+                    />
+                    <button
+                        className='absolute top-0 -left-9 text-lg rounded-full py-1 px-3 bg-red-600 text-white'
+                        onClick={() => {
+                            setImage(null);
+                            setPreviewImage(null);
+                        }}
+                    >
+                        X
+                    </button>
+                </div>
+                }
 
                 <div className='flex justify-end items-end col-start-2 text-2xl'>
-                    <ul className='flex space-x-6 pr-4 '>
+                    <div className='flex space-x-6 pr-4 '>
                         <div className='flex mobile:hidden sm:inline-flex'>
-                            <li className='flex items-center '>
-                                <button
-                                    className='hover:text-kitsuneBlue4'
+                            <div className='flex items-center  '>
+                                <input
+                                    id='imageUpload'
+                                    className=''
                                     type='file'
                                     onChange={(event) => setImage(event.target.files[0])}
+                                    accept='image/*'
+                                    style={{display: 'none'}}
                                 >
-                                    <AiOutlinePicture />
-                                </button>
-                            </li>
+                                </input>
+                                    <label
+                                        className='hover:text-kitsuneBlue4 hover:cursor-pointer' 
+                                        htmlFor="imageUpload"
+                                    > 
+                                        <AiOutlinePicture />
+                                    </label>
+                            </div>
                         </div>
-                        <li>
+                        <div>
                             <button             
                                 className=' bg-kitsuneBlue5 py-2 px-4 text-white hover:bg-kitsuneBlue4'
                                 onClick={handleSend} >
                                 Send
                             </button>
-                        </li>
-                    </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
 
