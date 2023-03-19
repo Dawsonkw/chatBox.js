@@ -1,48 +1,29 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { getAuth, signOut} from 'firebase/auth';
 import Chats from './Chats';
 import Searchbar from './Searchbar';
 import { AuthContext } from '../context/AuthContext';
 import { ChatsContext } from '../context/ChatsContext'
 import { useNavigate } from 'react-router-dom';
-import { doc, onSnapshot } from 'firebase/firestore';
-import { db } from '../firebase';
+
 
 const Sidebar = () => {
-    const [messages, setMessages] = useState([]);
     const {currentUser} = useContext(AuthContext)  
-    const { data } = useContext(ChatsContext);
+    const { dispatch } = useContext(ChatsContext);
     const navigate = useNavigate();
-
-    useEffect(() => {
-        const getChats = () => {
-            if(!data.combinedId) return;
-            const unsubscribe = onSnapshot(doc(db, 'chats', data.combinedId), (doc) => {
-                setMessages(doc.data().messages)
-            });
-
-            return () => {
-                unsubscribe()
-            };
-        };
-        currentUser.uid && getChats()
-    }, [currentUser.uid, data.combinedId])
-
-    const clearMessagesOnLogout = () => {
-        setMessages([]);
-    }
 
     const logout = async (event) => {
         event.preventDefault();
         try{
             const auth = getAuth();
             await signOut(auth);
-            clearMessagesOnLogout();
+            dispatch({ type: 'CLEAR_DATA' })
             navigate('/login');
         } catch(error) {
             console.log(error)
         }
     }
+
 
     return (
         <div className='relative h-full w-1/3 bg-kitsuneBlue7 rounded-l-xl '>
@@ -57,7 +38,6 @@ const Sidebar = () => {
                         </div>
                     </div>
                     <div className='flex col-span-1 justify-end py-4 pr-4'>
-
                     </div>
                 </div>          
             </div>

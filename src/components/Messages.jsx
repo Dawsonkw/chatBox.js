@@ -11,6 +11,10 @@ const Messages = () =>  {
     const { currentUser } = useContext(AuthContext);
     const autoScrollRef = useRef();
 
+    if(!data.user) {
+        return null;
+    }
+
     useEffect(() => {
         const getChats = () => {
             if(!data.combinedId) return;
@@ -28,6 +32,8 @@ const Messages = () =>  {
     useEffect(() => {
         autoScrollRef.current?.scrollIntoView({ behavior: 'smooth' })
     })
+
+
 
 
      

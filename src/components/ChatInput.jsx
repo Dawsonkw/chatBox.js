@@ -94,7 +94,7 @@ function ChatInput(props) {
                 <textarea 
                     className=' w-full resize-none h-20 my-auto text-xl pl-2 focus:outline-none overflow-y-auto overflow-x-hidden sm:w-44 md:w-52 lg:w-72 xl:w-100 bg-transparent' 
                     style={{lineHeight: '1.5', padding: '10px', whiteSpace: 'pre-wrap', wordWrap: 'break-word', overflowY: 'auto', display: 'block', boxSizing: 'border-box'}} 
-                    placeholder='Type a message...'
+                    placeholder='Type words here...'
                     onChange={(event) => setText(event.target.value)}
                     value={text}
                     onKeyDown={handleKey}
