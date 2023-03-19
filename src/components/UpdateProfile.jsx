@@ -39,10 +39,11 @@ function UpdateProfile(props) {
             const userDocRef = doc(collection(getFirestore(), 'users'), user.uid);
             await updateDoc(userDocRef, {
                 displayName: username,
+                displayNameLower: username.toLowerCase(),
                 photoURL: photoURL,
                 uid: user.uid,
             });
-            console.log('Firestore User Database Updated Successfully'); // Remove console statements before final deployment
+
             const updatedUser = {
                 ...currentUser,
                 displayName: username,
@@ -58,8 +59,7 @@ function UpdateProfile(props) {
         } catch (error) {
             console.error(error);
         }
-        
-        console.log('Profile Updated Successfully') // Remove before final deployment
+
         navigate('/profile')
     };
     
@@ -72,9 +72,6 @@ function UpdateProfile(props) {
                         <h1 className='text-4xl underline pb-4 text-center'>
                             Profile Information
                         </h1>
-                        {/* <p className='text-xl text-center mb-6'>
-                            Enter your profile information
-                        </p> */}
                     </div>
                     <form className='flex flex-col items-center' onSubmit={handleFormSubmit}>
                     

@@ -33,13 +33,8 @@ const Messages = () =>  {
         autoScrollRef.current?.scrollIntoView({ behavior: 'smooth' })
     })
 
-
-
-
-     
     return (
         <div className=''>
-            {/* {console.log('messages Render:', messages)} */}
             {messages.map((message) => (
                     <Message message={message} key={message.id} />
             ))}

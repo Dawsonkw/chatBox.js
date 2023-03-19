@@ -10,9 +10,7 @@ import logo from '../images/chatBoxEdit.png'
 
 const current = new Date().toISOString().split("T")[0] //split method will split the string to divide the date from the included tine, [0] selects for the first element (zeroth indexed), we are after the date not the time so we split it to make it useful
 
-
 function Creator() {
-
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -23,7 +21,6 @@ function Creator() {
     const navigate = useNavigate();
 
     // Firebase password validation
-
     const validatePassword = () => {
         let isValid = true;
         if(password !== '' && confirmPassword !== ''){
@@ -41,8 +38,6 @@ function Creator() {
             //Creating a new user w/ email & password using firebase
             createUserWithEmailAndPassword(auth, email, password)
             .then((res) => {
-                console.log(res.user)
-
                 // Add user data to Firestore
                 const userRef = doc(db, 'users', res.user.uid);
                 const userData = {
@@ -83,11 +78,11 @@ function Creator() {
 
     return (
         <div className=' pt-10 w-1/2 mx-auto'>
-            <div className='bg-kitsuneBlue3 rounded-lg p-6 shadow-lg mx-5 pt-5 pb-20 font-robotoSlab'>
+            <div className='bg-kitsuneBlue7 rounded-lg p-6 shadow-lg mx-5 pt-5 pb-20 font-robotoSlab'>
                 <div>
                     <img className='mx-auto pb-4' src={logo} alt="" />
-                    <h2 className='text-4xl text-center pb-4'>Chatbox.js Account Creator</h2>
-                    <p className='text-xl text-center'>To create a chatbox account please input the following: </p>
+                    <h2 className='text-4xl text-center pb-4 text-white'>Chatbox.js Account Creator</h2>
+                    <p className='text-xl text-center text-white pb-2'>To create a chatbox account please input the following: </p>
                 </div>
                 <div className=' bg-gray-200 rounded-md max-w-md mx-auto font-robotoSlab'>
                     
@@ -102,7 +97,7 @@ function Creator() {
                                         type="email"
                                         required
                                         name="email"
-                                        className='w-full rounded-md p-2 border border-kitsuneBlue'
+                                        className='w-full rounded-md p-2 border border-kitsuneBlue5'
                                         value={email}
                                         onChange={event => setEmail(event.target.value)}
                                     />
@@ -116,7 +111,7 @@ function Creator() {
                                             <input
                                                 type={showPassword ? 'text' : 'password'}
                                                 name="password"
-                                                className='w-full rounded-md p-2 border border-kitsuneBlue'
+                                                className='w-full rounded-md p-2 border border-kitsuneBlue5'
                                                 value={password}
                                                 required
                                                 onChange={event => setPassword(event.target.value)}
@@ -138,7 +133,7 @@ function Creator() {
                                             <input
                                                 type={showPassword ? 'text' : 'password'}
                                                 name="confirmPassword"
-                                                className='w-full rounded-md p-2 border border-kitsuneBlue'
+                                                className='w-full rounded-md p-2 border border-kitsuneBlue5'
                                                 value={confirmPassword}
                                                 required
                                                 onChange={event => setConfirmPassword(event.target.value)}
@@ -153,14 +148,14 @@ function Creator() {
                                             type="date"
                                             name="birthdate"
                                             max={current}
-                                            className='w-full rounded-md p-2 border border-kitsuneBlue'
+                                            className='w-full rounded-md p-2 border border-kitsuneBlue5'
                                             required
                                             value={date}
                                             onChange={event => setDate(event.target.value)}
                                         />
                                     </div>
                                 <div className='flex justify-center'>
-                                    <button type='submit'  className='bg-kitsuneBlue p-5 rounded-lg mb-3 hover:bg-kitsuneBlue3'>
+                                    <button type='submit'  className='bg-kitsuneBlue5 hover:bg-kitsuneBlue4 p-5 rounded-lg mb-3 '>
                                         Create Account
                                     </button>
                                 </div>

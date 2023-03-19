@@ -90,11 +90,11 @@ function ChatInput(props) {
 
     return (
         <div>
-            <div className='bg-white w-full h-24 items-center pl-4 flex justify-between'>
+            <div className='bg-white w-full h-28 items-center pl-4 flex justify-between'>
                 <textarea 
-                    className=' w-full resize-none h-20 my-auto text-xl pl-2 focus:outline-none overflow-y-auto overflow-x-hidden sm:w-44 md:w-52 lg:w-72 xl:w-100 bg-transparent' 
+                    className=' w-full resize-none h-20 my-auto text-xl pl-2 focus:outline-none overflow-y-auto  sm:w-44 md:w-52 lg:w-72 xl:w-100 bg-transparent mobile:placeholder:text-sm md:placeholder:text-xl mobile:text-xs sm:text-sm md:text-xl' 
                     style={{lineHeight: '1.5', padding: '10px', whiteSpace: 'pre-wrap', wordWrap: 'break-word', overflowY: 'auto', display: 'block', boxSizing: 'border-box'}} 
-                    placeholder='Type words here...'
+                    placeholder='Chat...'
                     onChange={(event) => setText(event.target.value)}
                     value={text}
                     onKeyDown={handleKey}
@@ -104,11 +104,11 @@ function ChatInput(props) {
                     <img
                         src={previewImage}
                         alt='Image Upload Preview'
-                        style={{ width: '75px', height: '75px', objectFit: 'cover' }}
+                        style={{ width: '75px', height: '75px', objectFit: 'cover', }}
                         className=''
                     />
                     <button
-                        className='absolute top-0 -left-9 text-lg rounded-full py-1 px-3 bg-red-600 text-white'
+                        className='absolute -top-3 -left-5 text-lg rounded-full py-1 px-3 bg-red-600 text-white mobile:text-xs'
                         onClick={() => {
                             setImage(null);
                             setPreviewImage(null);
@@ -120,8 +120,8 @@ function ChatInput(props) {
                 }
 
                 <div className='flex justify-end items-end col-start-2 text-2xl'>
-                    <div className='flex space-x-6 pr-4 '>
-                        <div className='flex mobile:hidden sm:inline-flex'>
+                    <div className='flex space-x-2 pr-4 '>
+                        <div className='flex  sm:inline-flex'>
                             <div className='flex items-center  '>
                                 <input
                                     id='imageUpload'
@@ -142,7 +142,7 @@ function ChatInput(props) {
                         </div>
                         <div>
                             <button             
-                                className=' bg-kitsuneBlue5 py-2 px-4 text-white hover:bg-kitsuneBlue4'
+                                className=' bg-kitsuneBlue5 py-2 px-4 text-white hover:bg-kitsuneBlue4 mobile:text-sm sm:text-lg'
                                 onClick={handleSend} >
                                 Send
                             </button>

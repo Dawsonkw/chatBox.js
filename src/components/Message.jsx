@@ -19,7 +19,7 @@ const Message = ({message}) => {
                 isSender ? 'flex-row-reverse' : 'flex-row'
             }`}>
                 <div>
-                    <img src={ isSender ? currentUser.photoURL : data.user.photoURL} style={{ height: 60, padding: 2 }} alt="" className="flex-grow-0 flex items-center justify-center bg-teal-500 rounded-full" />       
+                    <img src={ isSender ? currentUser.photoURL : data.user.photoURL} style={{ height: 60, padding: 2 }} alt="" className="flex-grow-0 flex items-center justify-center rounded-full" />       
                 </div>
                 <div className={`${ isSender ? 'justify-end' : 'justify-start'} pt-12`}>
                     <div 

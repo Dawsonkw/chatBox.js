@@ -14,7 +14,7 @@ function Searchbar(props) {
     const handleSearch = async () => {
         const q = query(
             collection(db, 'users'),
-            where('displayName', '==', username)
+            where('displayNameLower', '==', username.toLowerCase())
         );
         
         try {
@@ -77,19 +77,21 @@ function Searchbar(props) {
                         onKeyDown={handleKey}
                         onChange={(event) => setUserName(event.target.value)}
                         value={username}
-                        className='bg-transparent w-32 text-white outline-none placeholder:text-white'
+                        className='bg-transparent w-32 text-white outline-none placeholder:text-white mobile:placeholder:text-sm sm:placeholder:text-lg md:placeholder:text-xl'
                     />
                 </div>
                 {user && (
-                    <div className='flex items-center ' onClick={() => handleSelect(user)}>
-                        <img
-                            className='bg-teal-500 rounded-full pr-2 '
-                            src={user.photoURL}
-                            style={{height: 50, objectFit: 'cover',  padding:1}}
-                            alt="User Photo"
-                        />
-                        <div>
-                            <span className=' text-white text-xl px-2 pb-1'>{user.displayName}</span>
+                    <div className='absolute bg-kitsuneBlue4 py-2 px-3 rounded z-10 block sm:block md:block hover:cursor-pointer' onClick={() => handleSelect(user)}>
+                        <div className='flex items-center ' >
+                            <img
+                                className=' rounded-full pr-2  '
+                                src={user.photoURL}
+                                style={{height: 50, objectFit: 'cover',  padding:1}}
+                                alt="User Photo"
+                            />
+                            <div>
+                                <span className=' text-white text-xl px-2 pb-1 mobile:hidden sm:hidden md:inline-block'>{user.displayName}</span>
+                            </div>
                         </div>
                     </div>
                 )}

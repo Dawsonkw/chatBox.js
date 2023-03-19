@@ -29,14 +29,3 @@ function App() {
 
 export default App
 
-
-// 
-//  BG / button color match for login and create account screens
-//  
-//  figure out null chat input submission cases
-//  
-//  Solve empty account div on account creation
-// 
-//   review firebase backend logic and update rules
-// 
-// 

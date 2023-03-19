@@ -7,7 +7,6 @@ import { db } from '../firebase';
 
 const Chats = () => {
     const [chats, setChats] = useState([]);
-
     const { currentUser } = useContext(AuthContext);
     const { dispatch } = useContext(ChatsContext);
 
@@ -21,7 +20,6 @@ const Chats = () => {
                 unsubscribe()
             };
         };
-
         currentUser.uid && getChats();
     }, [currentUser.uid]);
 
@@ -30,13 +28,17 @@ const Chats = () => {
     };
 
     return (
-        <div>    
+        <div className=' overflow-y-scroll mobile:max-h-80 sm:max-h-full' style={{  scrollbarWidth: 'none', 'msOverflowStyle': 'none', '::webkitScrollbar': {display: 'none'}}}>     
             {Object.entries(chats)?.sort((a,b) => b[1].date - a[1].date).map((chat) => (
-                <div className=' flex py-4 px-2 hover:bg-kitsuneBlue4 hover:cursor-pointer' key={chat[0]} onClick={() => handleSelect(chat[1].userInfo)}>
-                    <img className='flex items-center justify-center bg-teal-500 rounded-full ' src={chat[1].userInfo.photoURL} style={{height: 80, padding:2}} alt="" />
-                    <div className='flex-col px-4 py-2'>
-                        <h1 className='text-2xl text-white mobile:hidden sm:hidden md:inline-block'>{chat[1].userInfo.displayName}</h1>
-                        <p className='mobile:hidden sm:hidden md:flex'>{chat[1].lastMessage?.text}</p>
+                <div className=' flex py-4 px-2 hover:bg-kitsuneBlue4 hover:cursor-pointer'  key={chat[0]} onClick={() => handleSelect(chat[1].userInfo)}>
+                    <div className=' mobile:flex-col'>
+                        <div className='flex-col px-4 py-2'>
+                        <div className='flex flex-row mobile:flex-col sm:flex-row'>
+                            <img className=' items-center justify-center rounded-full ' src={chat[1].userInfo.photoURL} style={{height: 80, padding:2}} alt="" />
+                                <h1 className='text-2xl px-1 text-white flex items-center sm:text-md'>{chat[1].userInfo.displayName}</h1>
+                        </div>
+                            <p className='mobile:hidden sm:flex'>{chat[1].lastMessage?.text}</p>
+                        </div>
                     </div>
 
                 </div>

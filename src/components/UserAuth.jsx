@@ -56,14 +56,13 @@ function UserAuth(props) {
         })
     }
 
-
     return (
         <div className='overflow-hidden h-screen'>
             <Header />
             <div className=' flex justify-center items-center h-screen w-1/2 mx-auto -mt-10 '>
-                <div className='bg-kitsuneBlue3 rounded-lg p-6 shadow-lg mx-5  pb-20 font-robotoSlab'>
+                <div className='bg-kitsuneBlue7 rounded-lg p-6 shadow-lg mx-5  pb-20 font-robotoSlab'>
                     <div>
-                        <h1 className='text-center text-4xl pb-4'>Chatbox.js Login</h1>
+                        <h1 className='text-center text-4xl pb-4 text-white'>Chatbox.js Login</h1>
                     </div>
                     <div className='pb-4'>
                         <img src={logo} alt="" />
@@ -75,7 +74,7 @@ function UserAuth(props) {
                             <label htmlFor="email">Email</label>
                             <input
                             type="text"
-                            className='mb-5 w-full border border-kitsuneBlue p-2 rounded-lg'
+                            className='mb-5 w-full border border-kitsuneBlue5 p-2 rounded-lg'
                             id='email'
                             placeholder='Enter your email'
                             onChange={(event)=> setEmail(event.target.value)}
@@ -87,12 +86,12 @@ function UserAuth(props) {
                                 <input
                                     type={showPassword ? 'text' : 'password'}
                                     required
-                                    className='mb-5 w-full border border-kitsuneBlue p-2 rounded-lg'
+                                    className='mb-5 w-full border border-kitsuneBlue5 p-2 rounded-lg'
                                     placeholder='Enter your password'
                                     onChange={(event)=> setPassword(event.target.value)}
             
                                 />
-                                <div className='absolute right-3 top-3 cursor-pointer hover:text-kitsuneBlue text-xl'
+                                <div className='absolute right-3 top-3 cursor-pointer hover:text-kitsuneBlue5 text-xl'
                                     onClick={() => setShowPassword(!showPassword)}>
                                     <BiShow />
                                 </div>
@@ -107,7 +106,7 @@ function UserAuth(props) {
                                             loadIcon(true);
                                             }
                                         }}
-                                        className='bg-kitsuneBlue hover:bg-kitsuneBlue3 font-medium py-2 rounded-lg px-16'
+                                        className='bg-kitsuneBlue5 hover:bg-kitsuneBlue4 font-medium py-2 rounded-lg px-16'
                                         type='submit'
                                         >
                                         Login
@@ -126,12 +125,12 @@ function UserAuth(props) {
                                 </div>
                                 <div className='flex-col '>
                                     <div className=''>
-                                        <p onClick={() => navigate('/creator')} className='text-left ml-5 hover:text-kitsuneBlue hover:cursor-pointer' type='submit'>
+                                        <p onClick={() => navigate('/creator')} className='text-left ml-5 hover:text-kitsuneBlue5 hover:cursor-pointer' type='submit'>
                                             Create Account
                                         </p>
                                     </div>
                                     <div className=''>
-                                        <p onClick={resetTrigger} className='text-left ml-5 hover:text-kitsuneBlue hover:cursor-pointer'>
+                                        <p onClick={resetTrigger} className='text-left ml-5 hover:text-kitsuneBlue5 hover:cursor-pointer'>
                                             Forgot Password
                                         </p>
                                     </div>
